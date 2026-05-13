@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/api';
 
-export default function Login() {
+export default function Login({ onForgotPassword }) {
   const { login } = useAuth();
   const [tab, setTab] = useState('login');
   const [email, setEmail] = useState('');
@@ -46,11 +46,8 @@ export default function Login() {
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0a1a2e 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      overflow: 'hidden'
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      position: 'relative', overflow: 'hidden'
     }}>
       <div style={{
         position: 'absolute', top: '20%', left: '15%',
@@ -69,20 +66,17 @@ export default function Login() {
         background: 'rgba(255,255,255,0.04)',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: '24px',
-        padding: '48px 40px',
-        width: '100%',
-        maxWidth: '420px',
+        borderRadius: '24px', padding: '48px 40px',
+        width: '100%', maxWidth: '420px',
         boxShadow: '0 32px 64px rgba(0,0,0,0.4)',
-        position: 'relative',
-        zIndex: 1
+        position: 'relative', zIndex: 1
       }}>
         <div style={{ textAlign: 'center', marginBottom: '28px' }}>
           <div style={{
             width: '72px', height: '72px',
             background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-            borderRadius: '20px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            borderRadius: '20px', display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
             fontSize: '32px', margin: '0 auto 16px',
             boxShadow: '0 8px 32px rgba(99,102,241,0.4)'
           }}>🔐</div>
@@ -94,31 +88,18 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Tab */}
         <div style={{
-          display: 'flex',
-          background: 'rgba(255,255,255,0.05)',
-          borderRadius: '12px',
-          padding: '4px',
-          marginBottom: '24px'
+          display: 'flex', background: 'rgba(255,255,255,0.05)',
+          borderRadius: '12px', padding: '4px', marginBottom: '24px'
         }}>
           {['login', 'register'].map(t => (
-            <button
-              key={t}
-              onClick={() => { setTab(t); setError(''); setSuccess(''); }}
+            <button key={t} onClick={() => { setTab(t); setError(''); setSuccess(''); }}
               style={{
-                flex: 1,
-                padding: '10px',
-                borderRadius: '10px',
-                border: 'none',
+                flex: 1, padding: '10px', borderRadius: '10px', border: 'none',
                 background: tab === t ? 'linear-gradient(135deg, #6366f1, #8b5cf6)' : 'transparent',
                 color: tab === t ? '#fff' : 'rgba(255,255,255,0.4)',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
+                fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s'
+              }}>
               {t === 'login' ? '🔓 Giriş Yap' : '📝 Kayıt Ol'}
             </button>
           ))}
@@ -126,32 +107,18 @@ export default function Login() {
 
         {error && (
           <div style={{
-            background: 'rgba(239,68,68,0.1)',
-            border: '1px solid rgba(239,68,68,0.3)',
-            borderRadius: '12px',
-            padding: '14px 16px',
-            color: '#f87171',
-            fontSize: '14px',
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            ⚠️ {error}
-          </div>
+            background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
+            borderRadius: '12px', padding: '14px 16px', color: '#f87171',
+            fontSize: '14px', marginBottom: '20px', textAlign: 'center'
+          }}>⚠️ {error}</div>
         )}
 
         {success && (
           <div style={{
-            background: 'rgba(34,197,94,0.1)',
-            border: '1px solid rgba(34,197,94,0.3)',
-            borderRadius: '12px',
-            padding: '14px 16px',
-            color: '#22c55e',
-            fontSize: '14px',
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            ✅ {success}
-          </div>
+            background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)',
+            borderRadius: '12px', padding: '14px 16px', color: '#22c55e',
+            fontSize: '14px', marginBottom: '20px', textAlign: 'center'
+          }}>✅ {success}</div>
         )}
 
         {tab === 'login' ? (
@@ -160,54 +127,31 @@ export default function Login() {
               <label style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '8px' }}>
                 EMAIL ADRESİ
               </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ornek@email.com"
-                required
-                style={{
-                  width: '100%', padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '12px', color: '#fff',
-                  fontSize: '15px', outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="ornek@email.com" required
+                style={{ width: '100%', padding: '14px 16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <div style={{ marginBottom: '28px' }}>
+            <div style={{ marginBottom: '8px' }}>
               <label style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '8px' }}>
                 ŞİFRE
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                style={{
-                  width: '100%', padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '12px', color: '#fff',
-                  fontSize: '15px', outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••" required
+                style={{ width: '100%', padding: '14px 16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: '100%', padding: '15px',
-                background: loading ? 'rgba(99,102,241,0.4)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-                border: 'none', borderRadius: '12px',
-                color: '#fff', fontSize: '16px', fontWeight: '600',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                boxShadow: loading ? 'none' : '0 8px 24px rgba(99,102,241,0.4)'
-              }}
-            >
+            <div style={{ textAlign: 'right', marginBottom: '24px' }}>
+              <button type="button" onClick={onForgotPassword}
+                style={{ background: 'none', border: 'none', color: '#6366f1', fontSize: '13px', cursor: 'pointer', textDecoration: 'underline' }}>
+                Şifremi Unuttum
+              </button>
+            </div>
+            <button type="submit" disabled={loading} style={{
+              width: '100%', padding: '15px',
+              background: loading ? 'rgba(99,102,241,0.4)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              border: 'none', borderRadius: '12px', color: '#fff',
+              fontSize: '16px', fontWeight: '600', cursor: loading ? 'not-allowed' : 'pointer',
+              boxShadow: loading ? 'none' : '0 8px 24px rgba(99,102,241,0.4)'
+            }}>
               {loading ? '⏳ Giriş yapılıyor...' : '🔓 Giriş Yap'}
             </button>
           </form>
@@ -217,74 +161,33 @@ export default function Login() {
               <label style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '8px' }}>
                 İSİM
               </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ad Soyad"
-                required
-                style={{
-                  width: '100%', padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '12px', color: '#fff',
-                  fontSize: '15px', outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
+              <input type="text" value={name} onChange={e => setName(e.target.value)}
+                placeholder="Ad Soyad" required
+                style={{ width: '100%', padding: '14px 16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: '20px' }}>
               <label style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '8px' }}>
                 EMAIL ADRESİ
               </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="ornek@email.com"
-                required
-                style={{
-                  width: '100%', padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '12px', color: '#fff',
-                  fontSize: '15px', outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="ornek@email.com" required
+                style={{ width: '100%', padding: '14px 16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
             <div style={{ marginBottom: '28px' }}>
               <label style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px', fontWeight: '500', display: 'block', marginBottom: '8px' }}>
                 ŞİFRE
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                required
-                style={{
-                  width: '100%', padding: '14px 16px',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '12px', color: '#fff',
-                  fontSize: '15px', outline: 'none',
-                  boxSizing: 'border-box'
-                }}
-              />
+              <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••" required
+                style={{ width: '100%', padding: '14px 16px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#fff', fontSize: '15px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: '100%', padding: '15px',
-                background: loading ? 'rgba(99,102,241,0.4)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-                border: 'none', borderRadius: '12px',
-                color: '#fff', fontSize: '16px', fontWeight: '600',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                boxShadow: loading ? 'none' : '0 8px 24px rgba(99,102,241,0.4)'
-              }}
-            >
+            <button type="submit" disabled={loading} style={{
+              width: '100%', padding: '15px',
+              background: loading ? 'rgba(99,102,241,0.4)' : 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+              border: 'none', borderRadius: '12px', color: '#fff',
+              fontSize: '16px', fontWeight: '600', cursor: loading ? 'not-allowed' : 'pointer',
+              boxShadow: loading ? 'none' : '0 8px 24px rgba(99,102,241,0.4)'
+            }}>
               {loading ? '⏳ Kayıt yapılıyor...' : '📝 Kayıt Ol'}
             </button>
           </form>
