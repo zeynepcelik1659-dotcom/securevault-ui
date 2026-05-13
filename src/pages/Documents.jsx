@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
-import { documentService } from '../services/api';
+import { adminService } from '../services/api';
 
 export default function Documents() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    documentService.getMyDocuments()
+    adminService.getAllDocuments()
       .then(res => setDocuments(res.data.documents))
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);
+
+  const filtered = documents.filter(doc =>
+    doc.title?.toLowerCase().includes(search.toLowerCase()) ||
+    doc.ownerId?.name?.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (loading) return (
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '400px' }}>
@@ -20,18 +26,34 @@ export default function Documents() {
 
   return (
     <div className="fade-in">
-      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h2 style={{ color: '#fff', fontSize: '22px', fontWeight: '700', marginBottom: '6px' }}>
-            Dokümanlar
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '14px' }}>
-            Toplam {documents.length} doküman
-          </p>
-        </div>
+      <div style={{ marginBottom: '24px' }}>
+        <h2 style={{ color: '#fff', fontSize: '22px', fontWeight: '700', marginBottom: '6px' }}>
+          Tüm Dokümanlar
+        </h2>
+        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '14px' }}>
+          Toplam {documents.length} doküman
+        </p>
       </div>
 
-      {documents.length === 0 ? (
+      <input
+        placeholder="🔍 Başlık veya kullanıcı ara..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        style={{
+          width: '300px',
+          padding: '10px 16px',
+          background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: '10px',
+          color: '#fff',
+          fontSize: '14px',
+          outline: 'none',
+          marginBottom: '24px',
+          boxSizing: 'border-box'
+        }}
+      />
+
+      {filtered.length === 0 ? (
         <div style={{
           background: 'rgba(255,255,255,0.03)',
           border: '1px solid rgba(255,255,255,0.06)',
@@ -40,11 +62,8 @@ export default function Documents() {
           textAlign: 'center'
         }}>
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>📄</div>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '16px', marginBottom: '8px' }}>
+          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '16px' }}>
             Henüz doküman yok
-          </p>
-          <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '13px' }}>
-            API üzerinden doküman ekleyebilirsiniz
           </p>
         </div>
       ) : (
@@ -53,7 +72,7 @@ export default function Documents() {
           gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
           gap: '16px'
         }}>
-          {documents.map(doc => (
+          {filtered.map(doc => (
             <div key={doc._id} style={{
               background: 'rgba(255,255,255,0.03)',
               border: '1px solid rgba(255,255,255,0.06)',
@@ -72,7 +91,7 @@ export default function Documents() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontSize: '20px'
                 }}>📄</div>
-                <div>
+                <div style={{ flex: 1 }}>
                   <div style={{ color: '#fff', fontSize: '15px', fontWeight: '600' }}>{doc.title}</div>
                   <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px' }}>
                     {new Date(doc.createdAt).toLocaleDateString('tr-TR')}
@@ -80,7 +99,6 @@ export default function Documents() {
                 </div>
                 {doc.isSensitive && (
                   <span style={{
-                    marginLeft: 'auto',
                     background: 'rgba(239,68,68,0.15)',
                     color: '#ef4444',
                     padding: '3px 8px',
@@ -94,17 +112,38 @@ export default function Documents() {
                 color: 'rgba(255,255,255,0.4)',
                 fontSize: '13px',
                 lineHeight: '1.5',
+                marginBottom: '12px',
                 overflow: 'hidden',
                 display: '-webkit-box',
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical'
               }}>
                 {doc.content}
               </p>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '8px 12px',
+                background: 'rgba(255,255,255,0.03)',
+                borderRadius: '8px'
+              }}>
+                <div style={{
+                  width: '24px', height: '24px',
+                  background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                  borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '11px', fontWeight: '700', color: '#fff'
+                }}>
+                  {doc.ownerId?.name?.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '12px' }}>{doc.ownerId?.name}</div>
+                  <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: '11px' }}>{doc.ownerId?.email}</div>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
     </div>
   );
-} 
+}

@@ -36,11 +36,25 @@ export const authService = {
 export const adminService = {
   getDashboard: () => api.get('/admin/dashboard'),
   getLogs: () => api.get('/admin/logs'),
+  getAllUsers: () => api.get('/admin/users'),
+  createUser: (data) => api.post('/admin/users', data),
+  getAllDocuments: () => api.get('/admin/documents'),
+  updateUserRole: (id, role) => api.patch(`/admin/users/${id}/role`, { role }),
 };
 
 export const documentService = {
   getMyDocuments: () => api.get('/documents/my'),
   getDocumentById: (id) => api.get(`/documents/${id}`),
+  createDocument: (formData) => api.post('/documents', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+  deleteDocument: (id) => api.delete(`/documents/${id}`),
+};
+
+export const userService = {
+  getMe: () => api.get('/users/me'),
+  updateProfile: (data) => api.patch('/users/profile', data),
+  updatePassword: (data) => api.patch('/users/password', data),
 };
 
 export default api;

@@ -5,13 +5,17 @@ import Dashboard from './pages/Dashboard';
 import Logs from './pages/Logs';
 import Users from './pages/Users';
 import Documents from './pages/Documents';
+import MyDocuments from './pages/MyDocuments';
+import Profile from './pages/Profile';
 import ApiDocs from './pages/ApiDocs';
 import Sidebar from './components/Sidebar';
 
 function AppContent() {
   const { user, loading } = useAuth();
-  const [page, setPage] = useState('dashboard');
   const [collapsed, setCollapsed] = useState(false);
+  const [page, setPage] = useState(
+    user?.role === 'admin' ? 'dashboard' : 'mydocuments'
+  );
 
   if (loading) return (
     <div style={{
@@ -33,8 +37,10 @@ function AppContent() {
       case 'logs': return <Logs />;
       case 'users': return <Users />;
       case 'documents': return <Documents />;
+      case 'mydocuments': return <MyDocuments />;
+      case 'profile': return <Profile />;
       case 'apidocs': return <ApiDocs />;
-      default: return <Dashboard />;
+      default: return user.role === 'admin' ? <Dashboard /> : <MyDocuments />;
     }
   };
 
@@ -97,7 +103,7 @@ function AppContent() {
             <div>
               <div style={{ color: '#fff', fontSize: '13px', fontWeight: '600' }}>{user.name}</div>
               <div style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px' }}>
-                {user.role === 'admin' ? '👑 Admin' : '👤 User'}
+                {user.role === 'admin' ? '👑 Admin' : '👤 Kullanıcı'}
               </div>
             </div>
           </div>

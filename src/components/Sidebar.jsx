@@ -1,15 +1,22 @@
 import { useAuth } from '../context/AuthContext';
 
-const menuItems = [
+const adminMenuItems = [
   { id: 'dashboard', icon: '📊', label: 'Dashboard' },
   { id: 'users', icon: '👥', label: 'Kullanıcılar' },
-  { id: 'documents', icon: '📄', label: 'Dokümanlar' },
+  { id: 'documents', icon: '📄', label: 'Tüm Dokümanlar' },
   { id: 'logs', icon: '📋', label: 'Güvenlik Logları' },
   { id: 'apidocs', icon: '📡', label: 'API Docs' },
 ];
 
+const userMenuItems = [
+  { id: 'mydocuments', icon: '📄', label: 'Dokümanlarım' },
+  { id: 'profile', icon: '👤', label: 'Profilim' },
+];
+
 export default function Sidebar({ page, setPage, collapsed, setCollapsed }) {
   const { user, logout } = useAuth();
+
+  const menuItems = user?.role === 'admin' ? adminMenuItems : userMenuItems;
 
   return (
     <div style={{
@@ -24,7 +31,6 @@ export default function Sidebar({ page, setPage, collapsed, setCollapsed }) {
       transition: 'width 0.3s ease',
       overflow: 'hidden'
     }}>
-      {/* Logo */}
       <div style={{
         padding: '24px 20px',
         borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -44,7 +50,9 @@ export default function Sidebar({ page, setPage, collapsed, setCollapsed }) {
         {!collapsed && (
           <div style={{ flex: 1 }}>
             <div style={{ color: '#fff', fontWeight: '700', fontSize: '15px' }}>SecureVault</div>
-            <div style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px' }}>Admin Panel</div>
+            <div style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px' }}>
+              {user?.role === 'admin' ? 'Admin Panel' : 'Kullanıcı Paneli'}
+            </div>
           </div>
         )}
         <button onClick={() => setCollapsed(!collapsed)} style={{
@@ -58,7 +66,6 @@ export default function Sidebar({ page, setPage, collapsed, setCollapsed }) {
         </button>
       </div>
 
-      {/* User Info */}
       {!collapsed && user && (
         <div style={{
           padding: '16px 20px',
@@ -77,16 +84,15 @@ export default function Sidebar({ page, setPage, collapsed, setCollapsed }) {
           <div>
             <div style={{ color: '#fff', fontSize: '13px', fontWeight: '600' }}>{user.name}</div>
             <div style={{
-              color: user.role === 'admin' ? '#a78bfa' : 'rgba(255,255,255,0.4)',
+              color: user.role === 'admin' ? '#a78bfa' : '#60a5fa',
               fontSize: '11px', fontWeight: '500'
             }}>
-              {user.role === 'admin' ? '👑 Admin' : '👤 User'}
+              {user.role === 'admin' ? '👑 Admin' : '👤 Kullanıcı'}
             </div>
           </div>
         </div>
       )}
 
-      {/* Menu */}
       <nav style={{ padding: '12px', flex: 1 }}>
         {menuItems.map(item => (
           <button
@@ -123,7 +129,6 @@ export default function Sidebar({ page, setPage, collapsed, setCollapsed }) {
         ))}
       </nav>
 
-      {/* Logout */}
       <div style={{ padding: '12px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <button
           onClick={logout}
