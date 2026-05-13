@@ -253,11 +253,24 @@ export default function MyDocuments() {
                 </div>
               )}
 
-              <button onClick={() => handleDelete(doc._id)} style={{
-                padding: '6px 14px', background: 'rgba(239,68,68,0.1)',
-                border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px',
-                color: '#f87171', fontSize: '12px', cursor: 'pointer'
-              }}>🗑️ Sil</button>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {doc.fileUrl && (
+                  <a href={doc.fileUrl} target="_blank" rel="noreferrer" style={{
+                    display: 'inline-block', padding: '6px 14px',
+                    background: 'rgba(99,102,241,0.1)',
+                    border: '1px solid rgba(99,102,241,0.2)',
+                    borderRadius: '8px', color: '#818cf8',
+                    fontSize: '12px', textDecoration: 'none'
+                  }}>
+                    📥 Dosyayı Aç
+                  </a>
+                )}
+                <button onClick={() => handleDelete(doc._id)} style={{
+                  padding: '6px 14px', background: 'rgba(239,68,68,0.1)',
+                  border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px',
+                  color: '#f87171', fontSize: '12px', cursor: 'pointer'
+                }}>🗑️ Sil</button>
+              </div>
             </div>
           ))}
         </div>
